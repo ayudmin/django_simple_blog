@@ -24,6 +24,11 @@ class PostCreateView(CreateView):
 class PostDetailView(DetailView):
     model = Post
 
+    def get_object(self, **kwargs):
+        object = super().get_object(**kwargs)
+        PostView.objects.get_or_create(user=self.request.user, post=object)
+        return object
+
 
 class PostUpdateView(UpdateView):
     model = Post
