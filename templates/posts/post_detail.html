@@ -23,6 +23,33 @@
               <i class="fas fa-thumbs-up fa-lg"></i>{{ object.get_like_count }}
             </a>
             <hr>
+              {% if request.user.is_authenticated %}
+                      <hr>
+                  <h5>Comments</h5>
+                  {% for comment in object.comments %}
+                        <div>
+                            <p>{{ comment.content }}</p>
+                            <small>{{ comment.timestamp|timesince }} ago</small>
+                        </div>
+                  {% endfor %}
+                  <h4>Leave a comment below</h4>
+                <form method="POST" >
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button  class="btn btn-primary" type="submit">Comment</button>
+                </form>
+              {% else %}
+                      <hr>
+                  <h5>Comments</h5>
+                  {% for comment in object.comments %}
+                        <div>
+                            <p>{{ comment.content }}</p>
+                            <small>{{ comment.timestamp|timesince }} ago</small>
+                        </div>
+                  {% endfor %}
+                <h4>Login to comment</h4>
+                <a href="{% url 'account_login' %}" class="btn btn-primary btn-block">Login</a>
+              {% endif %}
           </div>
         </div>
     </div>
